@@ -14,3 +14,25 @@ class BlogUser(AbstractUser):
     class Meta:
         verbose_name = "사용자"
         verbose_name_plural = "사용자 목록"
+
+
+class Subscription(models.Model):
+    subscriber = models.ForeignKey(
+        BlogUser,
+        on_delete=models.CASCADE,
+        related_name="subscriptions",
+        verbose_name="구독자",
+    )
+    channel = models.ForeignKey(
+        BlogUser,
+        on_delete=models.CASCADE,
+        related_name="subscribers",
+        verbose_name="채널",
+    )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="구독일시")
+
+    class Meta:
+        verbose_name = "구독"
+        verbose_name_plural = "구독 목록"
+        ordering = ["-created_at"]
+        unique_together = ["subscriber", "channel"]
