@@ -11,6 +11,14 @@ class Post(models.Model):
         related_name="posts",
         verbose_name="저자",
     )
+    category = models.ForeignKey(
+        "Category",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="posts",
+        verbose_name="카테고리",
+    )
     series = models.ForeignKey(
         "Series",
         on_delete=models.SET_NULL,
@@ -78,6 +86,17 @@ class ReplyComment(models.Model):
         verbose_name = "대댓글"
         verbose_name_plural = "대댓글 목록"
         ordering = ["-created_at"]
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=30, unique=True, verbose_name="카테고리명")
+
+    class Meta:
+        verbose_name = "카테고리"
+        verbose_name_plural = "카테고리 목록"
+
+    def __str__(self):
+        return self.name
 
 
 class Series(models.Model):
