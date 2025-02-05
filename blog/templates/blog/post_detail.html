@@ -1,0 +1,18 @@
+<h2>Post Detail</h2>
+<h3>{{ post.title }}</h3>
+<p>{{ post.content }}</p>
+{% if post.thumbnail_img %}
+  <img src="{{ post.thumbnail_img.url }}" alt="{{ post.thumbnail_img }}">
+{% endif %}
+<p>{{ post.created_at }}</p>
+<p>{{ post.updated_at }}</p>
+
+{% if post.author == user %}
+  <a href="{% url 'post_edit' post.pk %}">수정</a>
+  <form action="{% url 'post_delete' post.pk %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="삭제">
+  </form>
+{% endif %}
+
+<a href="{% url 'post_list' %}">목록으로 가기</a>
