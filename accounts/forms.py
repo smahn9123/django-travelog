@@ -8,6 +8,12 @@ class BlogUserRegistrationForm(UserCreationForm):
     nickname = forms.CharField(max_length=30, required=True)
     profile_img = forms.ImageField(required=False)
 
+    def clean_profile_img(self):
+        profile_img = self.cleaned_data.get("profile_img")
+        if profile_img and profile_img.size > 1024 * 1024:
+            raise forms.ValidationError("이미지 크기는 1MB 이하여야 합니다.")
+        return profile_img
+
     class Meta:
         model = get_user_model()
         fields = [
