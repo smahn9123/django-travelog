@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.db.models import Q
 from django.views.generic import (
     ListView,
     DetailView,
@@ -17,6 +18,18 @@ class PostListView(ListView):
     context_object_name = "posts"
     # template_name = "blog/post_list.html"
     # paginate_by = 3
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        q = self.kwargs.get("q")
+        if q:
+            queryset = queryset.filter(
+                Q(title__contains=q)
+                | Q(content__icontains=q)
+                | Q(category_name__icontains=q)
+                | Q(tags__name__icontains=q)
+            ).distinct()
+        return queryset
 
 
 class PostDetailView(DetailView):

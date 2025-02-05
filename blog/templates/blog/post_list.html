@@ -1,7 +1,8 @@
-<p>{{ user.username }}</p>
-<p>{{ request.user.username }}</p>
-<p>{{ request.user.is_authenticated }}</p>
-
+<h2>Post List</h2>
+<form action="{% url 'post_list' %}" method='get'>
+  <input type="text" name="q">
+  <input type="submit" value="검색">
+</form>
 <ul>
   {% for post in object_list %}
     <li>
