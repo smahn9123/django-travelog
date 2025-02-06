@@ -32,6 +32,10 @@
             {% csrf_token %}
             <button type="submit" class="btn btn-link nav-link">새 포스트 작성</a>
           </form>
+          <form method="get" action="{% url 'accounts_profile' %}" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-link nav-link">프로필</button>
+          </form>
           <form method="post" action="{% url 'accounts_logout' %}" class="d-inline">
             {% csrf_token %}
             <button type="submit" class="btn btn-link nav-link">로그아웃</button>
