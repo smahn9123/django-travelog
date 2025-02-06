@@ -1,3 +1,5 @@
+{% load static %}
+{% load django_bootstrap5 %}
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -6,13 +8,50 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Travelog Home</title>
+    {% bootstrap_css %}
+    <style>
+      .home-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
+      }
+
+      .logo-container {
+        text-align: center;
+        padding: 2rem;
+      }
+
+      .buttons-container {
+        margin-top: 2rem;
+      }
+
+      .logo-img {
+        max-width: 300px;
+        height: auto;
+        margin-bottom: 2rem;
+      }
+    </style>
   </head>
 
   <body>
-    <h1>Travelog</h1>
-    <a href="{% url 'post_list' %}">입장하기</a>
+    <div class="home-container">
+      <div class="logo-container">
+        <img src="{% static 'images/Travelog.png' %}" alt="Travelog" class="logo-img">
+        <h2 class="text-center mb-4">여행의 경험을 기록하세요</h2>
+        <div class="buttons-container d-grid gap-3">
+          {% if user.is_authenticated %}
+            <a href="{% url 'post_list' %}" class="btn btn-primary btn-lg">메인으로 가기</a>
+          {% else %}
+            <a href="{% url 'accounts_login' %}" class="btn btn-primary btn-lg">로그인</a>
+            <a href="{% url 'accounts_register' %}" class="btn btn-outline-primary btn-lg">회원가입</a>
+            <a href="{% url 'post_list' %}" class="btn btn-outline-secondary btn-lg">둘러보기</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% bootstrap_javascript %}
   </body>
-
-  <body></body>
 
 </html>
