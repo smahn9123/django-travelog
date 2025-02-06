@@ -1,5 +1,8 @@
-<form method="post" enctype="multipart/form-data">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">제출</button>
-</form>
+{% extends 'base.html' %}
+{% block content %}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">제출</button>
+  </form>
+{% endblock %}

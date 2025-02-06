@@ -1,15 +1,17 @@
-{% load static %}
-
-<div>
-  <p>
-    {{ user.username }}</p>
-  <p>
-    {{ user.email }}</p>
-  <p>
-    {{ user.nickname }}</p>
-  {% if user.profile_img %}
-    <img src="{{ user.profile_img.url }}" alt="프로필 이미지">
-  {% else %}
-    <img src="{% static 'images/default_profile.png' %}" alt="기본 프로필 이미지">
-  {% endif %}
-</div>
+{% extends 'base.html' %}
+{% block content %}
+  {% load static %}
+  <div>
+    <p>
+      {{ user.username }}</p>
+    <p>
+      {{ user.email }}</p>
+    <p>
+      {{ user.nickname }}</p>
+    {% if user.profile_img %}
+      <img src="{{ user.profile_img.url }}" alt="프로필 이미지">
+    {% else %}
+      <img src="{% static 'images/default_profile.png' %}" alt="기본 프로필 이미지">
+    {% endif %}
+  </div>
+{% endblock %}
