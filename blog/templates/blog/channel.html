@@ -25,15 +25,15 @@
 
     {% if user.is_authenticated and user != channel_owner %}
       {% if is_subscribed %}
-	    <form action="{% url 'accounts_unsubscribe' %}" method="post">
+        <form action="{% url 'accounts_unsubscribe' %}" method="post">
           {% csrf_token %}
-          <input type="hidden" name="nickname" value={{ channel_owner.nickname }}>
+          <input type="hidden" name="nickname" value={{ channel_owner.nickname } }="}">
           <button type="submit" class="btn btn-primary">구독취소</button>
         </form>
-      {% else%}
+        {% else%}
         <form action="{% url 'accounts_subscribe' %}" method="post">
           {% csrf_token %}
-          <input type="hidden" name="nickname" value={{ channel_owner.nickname }}>
+          <input type="hidden" name="nickname" value={{ channel_owner.nickname } }="}">
           <button type="submit" class="btn btn-primary">구독</button>
         </form>
       {% endif %}
@@ -53,12 +53,15 @@
                 <small class="text-muted">
                   조회수
                   {{ post.view_count }}
-                  ·
+                  · 작성
                   {{ post.created_at|date:"Y.m.d" }}
                 </small>
               </p>
               {% if post.category %}
                 <span class="badge bg-secondary">{{ post.category.name }}</span>
+              {% endif %}
+              {% if post.is_subscribers_only %}
+                <span class="badge bg-primary">구독자 전용</span>
               {% endif %}
               <div class="mt-2">
                 <a href="{% url 'post_detail' pk=post.pk %}" class="btn btn-outline-primary btn-sm">읽기</a>

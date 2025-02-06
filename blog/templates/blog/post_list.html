@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+  {% load static %}
   <!-- 게시물 목록 -->
   <div class="row row-cols-1 row-cols-md-3 g-4">
     {% for post in posts %}
@@ -10,16 +11,29 @@
           {% endif %}
           <div class="card-body">
             <h5 class="card-title">{{ post.title }}</h5>
+            <!-- 저자 정보 -->
+            <div class="d-flex align-items-center mb-2">
+              {% if post.author.profile_img %}
+                <img src="{{ post.author.profile_img.url }}" alt="프로필 이미지" class="rounded-circle me-2" style="width: 24px; height: 24px; object-fit: cover;">
+              {% else %}
+                <img src="{% static 'images/default_profile.png' %}" alt="기본 프로필 이미지" class="rounded-circle me-2" style="width: 24px; height: 24px; object-fit: cover;">
+              {% endif %}
+              <a href="{% url 'channel' post.author.nickname %}" class="text-decoration-none text-dark">{{ post.author.nickname }}</a>
+            </div>
+
             <p class="card-text">
               <small class="text-muted">
                 조회수
                 {{ post.view_count }}
-                ·
+                · 작성
                 {{ post.created_at|date:"Y.m.d" }}
               </small>
             </p>
             {% if post.category %}
               <span class="badge bg-secondary">{{ post.category.name }}</span>
+            {% endif %}
+            {% if post.is_subscribers_only %}
+              <span class="badge bg-primary">구독자 전용</span>
             {% endif %}
             <div class="mt-2">
               <a href="{% url 'post_detail' pk=post.pk %}" class="btn btn-outline-primary btn-sm">읽기</a>
