@@ -1,5 +1,25 @@
-<form method="post" enctype="multipart/form-data">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">가입하기</button>
-</form>
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm mt-5">
+          <div class="card-body p-4">
+            <h2 class="text-center mb-4">회원가입</h2>
+
+            <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              {% bootstrap_form form %}
+
+              <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">가입하기</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
