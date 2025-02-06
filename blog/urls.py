@@ -9,4 +9,7 @@ urlpatterns = [
     path("delete/<int:pk>/", views.PostDeleteView.as_view(), name="post_delete"),
     path("channel/<str:nickname>", views.ChannelView.as_view(), name="channel"),
     path("series/write/", views.SeriesCreateView.as_view(), name="series_create"),
+    path(
+        "series/edit/<int:pk>/", views.SeriesUpdateView.as_view(), name="series_update"
+    ),
 ]

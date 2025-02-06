@@ -104,6 +104,9 @@ class ChannelView(ListView):
         context["is_subscribed"] = Subscription.objects.filter(
             subscriber=self.request.user, channel=self.channel_owner
         ).exists()
+        context["series_list"] = Series.objects.filter(
+            author=self.channel_owner
+        ).order_by("-created_at")
         return context
 
 
@@ -118,3 +121,19 @@ class SeriesCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse("channel", kwargs={"nickname": self.request.user.nickname})
+
+
+class SeriesUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Series
+    form_class = SeriesForm
+    login_url = reverse_lazy("accounts_login")
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("channel", kwargs={"nickname": self.request.user.nickname})
+
+    def test_func(self):
+        return self.request.user == self.get_object().author
