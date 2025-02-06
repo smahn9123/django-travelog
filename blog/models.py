@@ -46,6 +46,9 @@ class Post(models.Model):
         verbose_name_plural = "포스트 목록"
         ordering = ["-created_at"]
 
+    def __str__(self):
+        return self.title
+
 
 class Comment(models.Model):
     post = models.ForeignKey(
@@ -66,6 +69,9 @@ class Comment(models.Model):
         verbose_name_plural = "댓글 목록"
         ordering = ["-created_at"]
 
+    def __str__(self):
+        return self.content
+
 
 class ReplyComment(models.Model):
     comment = models.ForeignKey(
@@ -85,6 +91,9 @@ class ReplyComment(models.Model):
         verbose_name = "대댓글"
         verbose_name_plural = "대댓글 목록"
         ordering = ["-created_at"]
+
+    def __str__(self):
+        return self.content
 
 
 class Category(models.Model):
