@@ -23,6 +23,22 @@
       </div>
     </div>
 
+    {% if user.is_authenticated and user != channel_owner %}
+      {% if is_subscribed %}
+	    <form action="{% url 'accounts_unsubscribe' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="nickname" value={{ channel_owner.nickname }}>
+          <button type="submit" class="btn btn-primary">구독취소</button>
+        </form>
+      {% else%}
+        <form action="{% url 'accounts_subscribe' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="nickname" value={{ channel_owner.nickname }}>
+          <button type="submit" class="btn btn-primary">구독</button>
+        </form>
+      {% endif %}
+    {% endif %}
+
     <!-- 게시물 목록 -->
     <div class="row row-cols-1 row-cols-md-3 g-4">
       {% for post in posts %}

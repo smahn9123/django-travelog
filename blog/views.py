@@ -11,7 +11,7 @@ from django.views.generic import (
 from django.urls import reverse, reverse_lazy
 from .forms import PostForm
 from .models import Post
-from accounts.models import BlogUser
+from accounts.models import BlogUser, Subscription
 
 
 class PostListView(ListView):
@@ -97,4 +97,7 @@ class ChannelView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["channel_owner"] = self.channel_owner
+        context["is_subscribed"] = Subscription.objects.filter(
+            subscriber=self.request.user, channel=self.channel_owner
+        ).exists()
         return context
