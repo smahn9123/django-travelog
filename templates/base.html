@@ -13,45 +13,38 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container">
-        <!-- 메인 로고 -->
-        <a class="navbar-brand" href="{% url 'post_list' %}">
-          <img src="{% static 'images/Travelog.png' %}" alt="Travelog" height="30">
-          Travelog
-        </a>
+        <!-- 왼쪽 그룹: 로고와 검색창 -->
+        <div class="d-flex align-items-center">
+          <!-- 메인 로고 -->
+          <a class="navbar-brand me-3" href="{% url 'post_list' %}">
+            <img src="{% static 'images/Travelog.png' %}" alt="Travelog" height="30">
+            Travelog
+          </a>
 
-        <!-- 검색창 -->
-        <form class="d-flex mx-auto" action="{% url 'post_list' %}" method="get">
-            <input type="text" name="q" value="{{ q }}" class="form-control me-2" placeholder="여행지를 검색해보세요">
-            <button class="btn btn-outline-success" type="submit">검색</button>
-        </form>
+          <!-- 검색창 -->
+          <form class="d-flex" action="{% url 'post_list' %}" method="get">
+            <input type="text" name="q" value="{{ q }}" class="form-control me-2" placeholder="여행지를 검색해보세요" style="width: 350px;">
+            <button class="btn btn-outline-success d-flex align-items-center" type="submit" style="white-space: nowrap;">검색</button>
+          </form>
+        </div>
 
         <!-- 로그인/로그아웃 버튼 -->
         <div class="navbar-nav">
           {% if user.is_authenticated %}
-          <form method="post" action="{% url 'post_write' %}" class="d-inline">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-link nav-link">새 포스트 작성</a>
-          </form>
-          <form method="get" action="{% url 'accounts_profile' %}" class="d-inline">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-link nav-link">프로필</button>
-          </form>
-          <form method="post" action="{% url 'accounts_logout' %}" class="d-inline">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-link nav-link">로그아웃</button>
-          </form>
+            <a href="{% url 'post_write' %}" class="nav-link">새 포스트 작성</a>
+            <a href="{% url 'accounts_profile' %}" class="nav-link">프로필</a>
+            <form method="post" action="{% url 'accounts_logout' %}" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-link nav-link">로그아웃</button>
+            </form>
           {% else %}
-          <form method="post" action="{% url 'accounts_login' %}" class="d-inline">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-link nav-link">로그인</button>
-          </form>
+            <a href="{% url 'accounts_login' %}" class="nav-link">로그인</a>
           {% endif %}
         </div>
       </div>
     </nav>
 
     <main class="container mt-4">
-      {% comment %} {% bootstrap_messages %} {% endcomment %}
       {% block content %}{% endblock %}
     </main>
 
