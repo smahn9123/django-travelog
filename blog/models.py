@@ -114,6 +114,9 @@ class Series(models.Model):
         verbose_name_plural = "시리즈 목록"
         ordering = ["-created_at"]
 
+    def __str__(self):
+        return self.title
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=30, unique=True, verbose_name="태그명")

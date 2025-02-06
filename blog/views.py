@@ -9,8 +9,8 @@ from django.views.generic import (
     DeleteView,
 )
 from django.urls import reverse, reverse_lazy
-from .forms import PostForm
-from .models import Post
+from .forms import PostForm, SeriesForm
+from .models import Post, Series
 from accounts.models import BlogUser, Subscription
 
 
@@ -105,3 +105,16 @@ class ChannelView(ListView):
             subscriber=self.request.user, channel=self.channel_owner
         ).exists()
         return context
+
+
+class SeriesCreateView(LoginRequiredMixin, CreateView):
+    model = Series
+    form_class = SeriesForm
+    login_url = reverse_lazy("accounts_login")
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("channel", kwargs={"nickname": self.request.user.nickname})

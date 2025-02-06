@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-6">
+        <div class="card shadow-sm">
+          <div class="card-body p-4">
+            <h2 class="card-title mb-4">
+              {% if form.instance.pk %}
+                연재물 정보 수정
+              {% else %}
+                새 연재물 만들기
+              {% endif %}
+            </h2>
+
+            <form method="post">
+              {% csrf_token %}
+              {% bootstrap_form form %}
+
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                <a href="javascript:history.back()" class="btn btn-outline-secondary me-2">취소</a>
+                {% if form.instance.pk %}
+                  <button type="submit" class="btn btn-primary">수정하기</button>
+                {% else %}
+                  <button type="submit" class="btn btn-primary">만들기</button>
+                {% endif %}
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
