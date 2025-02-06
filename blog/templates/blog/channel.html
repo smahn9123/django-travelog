@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+  {% load static %}
+
+  <div class="container">
+    <!-- 채널 헤더 -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+      <div class="d-flex align-items-center">
+        {% if channel_owner.profile_img %}
+          <img src="{{ channel_owner.profile_img.url }}" alt="프로필 이미지" class="rounded-circle me-3" style="width: 80px; height: 80px; object-fit: cover;">
+        {% else %}
+          <img src="{% static 'images/default_profile.png' %}" alt="기본 프로필 이미지" class="rounded-circle me-3" style="width: 80px; height: 80px; object-fit: cover;">
+        {% endif %}
+
+        <div>
+          <h1 class="mb-1">{{ channel_owner.nickname }}의 블로그</h1>
+          <p class="text-muted mb-0">게시물
+            {{ posts|length }}개</p>
+          {% if channel_owner.bio %}
+            <p class="mt-2">{{ channel_owner.bio }}</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- 게시물 목록 -->
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      {% for post in posts %}
+        <div class="col">
+          <div class="card h-100">
+            {% if post.thumbnail_img %}
+              <img src="{{ post.thumbnail_img.url }}" class="card-img-top" alt="썸네일">
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">{{ post.title }}</h5>
+              <p class="card-text">
+                <small class="text-muted">
+                  조회수
+                  {{ post.view_count }}
+                  ·
+                  {{ post.created_at|date:"Y.m.d" }}
+                </small>
+              </p>
+              {% if post.category %}
+                <span class="badge bg-secondary">{{ post.category.name }}</span>
+              {% endif %}
+              <div class="mt-2">
+                <a href="{% url 'post_detail' pk=post.pk %}" class="btn btn-outline-primary btn-sm">읽기</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+          <p class="text-muted">아직 작성된 게시물이 없습니다.</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

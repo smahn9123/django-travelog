@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 from django.views.generic import (
     ListView,
     DetailView,
@@ -10,6 +11,7 @@ from django.views.generic import (
 from django.urls import reverse, reverse_lazy
 from .forms import PostForm
 from .models import Post
+from accounts.models import BlogUser
 
 
 class PostListView(ListView):
@@ -80,3 +82,19 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         return self.request.user == self.get_object().author
+
+
+class ChannelView(ListView):
+    model = Post
+    template_name = "blog/channel.html"
+    context_object_name = "posts"
+
+    def get_queryset(self):
+        nickname = self.kwargs["nickname"]
+        self.channel_owner = get_object_or_404(BlogUser, nickname=nickname)
+        return Post.objects.filter(author=self.channel_owner)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["channel_owner"] = self.channel_owner
+        return context
