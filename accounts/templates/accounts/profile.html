@@ -3,22 +3,38 @@
   {% load static %}
 
   <div class="container">
-    <!-- 프로필 헤더 섹션 -->
-    <div class="d-flex align-items-center mb-4">
-      <!-- 프로필 이미지 -->
-      <div class="me-3">
-        {% if user.profile_img %}
-          <img src="{{ user.profile_img.url }}" alt="프로필 이미지" class="rounded-circle" style="width: 80px; height: 80px; object-fit: cover;">
-        {% else %}
-          <img src="{% static 'images/default_profile.png' %}" alt="기본 프로필 이미지" class="rounded-circle" style="width: 80px; height: 80px; object-fit: cover;">
-        {% endif %}
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title mb-4">나의 프로필</h3>
+
+        <!-- 프로필 기본 정보 -->
+        <div class="d-flex align-items-center mb-4">
+          {% if user.profile_img %}
+            <img src="{{ user.profile_img.url }}" alt="프로필 이미지" class="rounded-circle me-3" style="width: 64px; height: 64px; object-fit: cover;">
+          {% else %}
+            <img src="{% static 'images/default_profile.png' %}" alt="기본 프로필 이미지" class="rounded-circle me-3" style="width: 64px; height: 64px; object-fit: cover;">
+          {% endif %}
+
+          <div class="d-flex align-items-center">
+            <h5 class="mb-0 me-3">{{ user.nickname }}</h5>
+            <a href="{% url 'channel' user.nickname %}" class="btn btn-outline-primary btn-sm">
+              나의 채널로 이동
+            </a>
+          </div>
+        </div>
+
+        <!-- 계정 정보 -->
+        <div class="mb-3">
+          <h6 class="text-muted mb-2">계정 정보</h6>
+          <p class="mb-1">
+            <small class="text-muted">이메일:</small>
+            {{ user.email }}</p>
+          <p class="mb-1">
+            <small class="text-muted">아이디:</small>
+            {{ user.username }}</p>
+        </div>
       </div>
-
-      <!-- 채널명(닉네임) -->
-      <h1 class="mb-0 fw-bold">{{ user.nickname }}</h1>
     </div>
-
-    <!-- 추가 정보 -->
   </div>
 
 {% endblock %}
