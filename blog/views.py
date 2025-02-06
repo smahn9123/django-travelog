@@ -31,12 +31,16 @@ class PostListView(ListView):
                 | Q(category__name__icontains=q)
                 | Q(tags__name__icontains=q)
             ).distinct()
-        return queryset
+        return queryset.order_by("-created_at")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         q = self.request.GET.get("q", "")
         context["q"] = q
+        if q:
+            context["popular_posts"] = self.get_queryset().order_by("-view_count")[:3]
+        else:
+            context["popular_posts"] = Post.objects.order_by("-view_count")[:3]
         return context
 
 
