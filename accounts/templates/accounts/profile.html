@@ -1,17 +1,24 @@
 {% extends 'base.html' %}
 {% block content %}
   {% load static %}
-  <div>
-    <p>
-      {{ user.username }}</p>
-    <p>
-      {{ user.email }}</p>
-    <p>
-      {{ user.nickname }}</p>
-    {% if user.profile_img %}
-      <img src="{{ user.profile_img.url }}" alt="프로필 이미지">
-    {% else %}
-      <img src="{% static 'images/default_profile.png' %}" alt="기본 프로필 이미지">
-    {% endif %}
+
+  <div class="container">
+    <!-- 프로필 헤더 섹션 -->
+    <div class="d-flex align-items-center mb-4">
+      <!-- 프로필 이미지 -->
+      <div class="me-3">
+        {% if user.profile_img %}
+          <img src="{{ user.profile_img.url }}" alt="프로필 이미지" class="rounded-circle" style="width: 80px; height: 80px; object-fit: cover;">
+        {% else %}
+          <img src="{% static 'images/default_profile.png' %}" alt="기본 프로필 이미지" class="rounded-circle" style="width: 80px; height: 80px; object-fit: cover;">
+        {% endif %}
+      </div>
+
+      <!-- 채널명(닉네임) -->
+      <h1 class="mb-0 fw-bold">{{ user.nickname }}</h1>
+    </div>
+
+    <!-- 추가 정보 -->
   </div>
+
 {% endblock %}
