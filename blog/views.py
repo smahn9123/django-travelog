@@ -101,9 +101,10 @@ class ChannelView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["channel_owner"] = self.channel_owner
-        context["is_subscribed"] = Subscription.objects.filter(
-            subscriber=self.request.user, channel=self.channel_owner
-        ).exists()
+        if self.request.user.is_authenticated:
+            context["is_subscribed"] = Subscription.objects.filter(
+                subscriber=self.request.user, channel=self.channel_owner
+            ).exists()
         context["subscriptions_received"] = (
             self.channel_owner.subscriptions_received.select_related("subscriber")
         )
