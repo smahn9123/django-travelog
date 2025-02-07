@@ -12,4 +12,9 @@ urlpatterns = [
     path(
         "series/edit/<int:pk>/", views.SeriesUpdateView.as_view(), name="series_update"
     ),
+    path(
+        "series/delete/<int:pk>/",
+        views.SeriesDeleteView.as_view(),
+        name="series_delete",
+    ),
 ]

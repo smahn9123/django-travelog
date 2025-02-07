@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card mt-5">
+          <div class="card-body">
+            <h2 class="card-title mb-4">연재물 삭제</h2>
+            <p>정말 "{{ series.title }}" 연재물을 삭제하시겠습니까?</p>
+            <form method="post">
+              {% csrf_token %}
+              <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger">삭제</button>
+                <a href="{% url 'channel' nickname=series.author.nickname %}" class="btn btn-secondary">취소</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

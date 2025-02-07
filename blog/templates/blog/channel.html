@@ -113,6 +113,7 @@
                     </p>
                     {% if user == channel_owner %}
                       <a href="{% url 'series_update' series.pk %}" class="btn btn-outline-secondary btn-sm">수정</a>
+                      <a href="{% url 'series_delete' series.pk %}" class="btn btn-outline-secondary btn-sm">삭제</a>
                     {% endif %}
                   </div>
                 </div>

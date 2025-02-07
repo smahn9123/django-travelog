@@ -157,3 +157,14 @@ class SeriesUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         return self.request.user == self.get_object().author
+
+
+class SeriesDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Series
+    login_url = reverse_lazy("accounts_login")
+
+    def get_success_url(self):
+        return reverse("channel", kwargs={"nickname": self.request.user.nickname})
+
+    def test_func(self):
+        return self.request.user == self.get_object().author
