@@ -16,9 +16,8 @@ Django를 활용한 여행 블로그 플랫폼으로, 사용자별 채널과 구
 - 일반/구독자 전용 포스트 작성
 - 포스트 조회수 추적
 - 태그 시스템
-- 대표 이미지 업로드 (10MB 제한)
 - 시리즈(연재) 기능
-- 카테고리 분류
+- 카테고리 분류(여행 지역)
 - 댓글/대댓글 시스템
 - 태그 시스템
 
@@ -30,6 +29,6 @@ Django를 활용한 여행 블로그 플랫폼으로, 사용자별 채널과 구
 
 ## 기술 스택
 
-- Backend: Django 5.0
+- Backend: Django
+- Frontend: Django Template + Bootstrap
 - Database: PostgreSQL
-- Frontend: Django Template + Bootstrap 5
