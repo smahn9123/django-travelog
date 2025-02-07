@@ -35,6 +35,41 @@
         </div>
       </div>
     </div>
+
+    <!-- 구독 채널 목록 -->
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title mb-4">구독 채널</h3>
+
+        {% if user.subscriptions.all %}
+          <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-3">
+            {% for subscription in user.subscriptions.all %}
+              <div class="col">
+                <div class="text-center">
+                  {% if subscription.channel.profile_img %}
+                    <img src="{{ subscription.channel.profile_img.url }}" alt="{{ subscription.channel.nickname }}" class="rounded-circle mb-2" style="width: 64px; height: 64px; object-fit: cover;">
+                  {% else %}
+                    <img src="{% static 'images/default_profile.png' %}" alt="기본 프로필 이미지" class="rounded-circle mb-2" style="width: 64px; height: 64px; object-fit: cover;">
+                  {% endif %}
+                  <div>
+                    <a href="{% url 'channel' subscription.channel.nickname %}" class="text-decoration-none">
+                      <h6 class="mb-0">{{ subscription.channel.nickname }}</h6>
+                    </a>
+                    <small class="text-muted">
+                      {{ subscription.created_at|date:"Y.m.d" }}
+                      부터
+                    </small>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-muted text-center">아직 구독중인 채널이 없습니다.</p>
+        {% endif %}
+      </div>
+    </div>
   </div>
+</div>
 
 {% endblock %}
