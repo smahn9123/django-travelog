@@ -27,18 +27,51 @@
           {% if is_subscribed %}
             <form action="{% url 'accounts_unsubscribe' %}" method="post">
               {% csrf_token %}
-              <input type="hidden" name="nickname" value={{ channel_owner.nickname } }="}">
+              <input type="hidden" name="nickname" value={{ channel_owner.nickname }}>
               <button type="submit" class="btn btn-primary">구독취소</button>
             </form>
           {% else %}
             <form action="{% url 'accounts_subscribe' %}" method="post">
               {% csrf_token %}
-              <input type="hidden" name="nickname" value={{ channel_owner.nickname } }="}">
+              <input type="hidden" name="nickname" value={{ channel_owner.nickname }}>
               <button type="submit" class="btn btn-primary">구독</button>
             </form>
           {% endif %}
         {% endif %}
       </div>
+    </section>
+
+    <section class="subscribers-list mb-5">
+      <div class="d-flex align-items-center mb-3">
+        <h2 class="mb-0 me-3">구독자 목록</h2>
+        <span class="text-muted">{{ subscriptions_received.count }}명</span>
+      </div>
+      {% if subscriptions_received %}
+        <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-3">
+          {% for subscription in subscriptions_received %}
+            <div class="col">
+              <div class="card h-100 border-0">
+                <div class="card-body text-center">
+                  {% if subscription.subscriber.profile_img %}
+                    <img src="{{ subscription.subscriber.profile_img.url }}" alt="{{ subscription.subscriber.nickname }}" class="rounded-circle mb-2" style="width: 64px; height: 64px; object-fit: cover;">
+                  {% else %}
+                    <img src="{% static 'images/default_profile.png' %}" alt="기본 프로필 이미지" class="rounded-circle mb-2" style="width: 64px; height: 64px; object-fit: cover;">
+                  {% endif %}
+                  <a href="{% url 'channel' subscription.subscriber.nickname %}" class="text-decoration-none">
+                    <h6 class="card-title mb-0">{{ subscription.subscriber.nickname }}</h6>
+                  </a>
+                  <small class="text-muted">
+                    {{ subscription.created_at|date:"Y.m.d" }}
+                    부터
+                  </small>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="text-muted text-center">아직 구독자가 없습니다.</p>
+      {% endif %}
     </section>
 
     <!-- 시리즈 목록 섹션 -->

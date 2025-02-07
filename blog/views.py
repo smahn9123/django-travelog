@@ -104,6 +104,9 @@ class ChannelView(ListView):
         context["is_subscribed"] = Subscription.objects.filter(
             subscriber=self.request.user, channel=self.channel_owner
         ).exists()
+        context["subscriptions_received"] = (
+            self.channel_owner.subscriptions_received.select_related("subscriber")
+        )
         context["series_list"] = Series.objects.filter(
             author=self.channel_owner
         ).order_by("-created_at")
