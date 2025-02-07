@@ -15,6 +15,9 @@ class BlogUser(AbstractUser):
         verbose_name = "사용자"
         verbose_name_plural = "사용자 목록"
 
+    def __str__(self):
+        return f"{self.username} (Nickname/Channel name: {self.nickname})"
+
 
 class Subscription(models.Model):
     subscriber = models.ForeignKey(
@@ -36,3 +39,6 @@ class Subscription(models.Model):
         verbose_name_plural = "구독 목록"
         ordering = ["-created_at"]
         unique_together = ["subscriber", "channel"]
+
+    def __str__(self):
+        return f"{self.subscriber.nickname} -> {self.channel.nickname}"
