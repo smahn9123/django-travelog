@@ -26,7 +26,7 @@ class Subscription(models.Model):
     channel = models.ForeignKey(
         BlogUser,
         on_delete=models.CASCADE,
-        related_name="subscribers",
+        related_name="subscriptions_received",
         verbose_name="채널",
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="구독일시")
