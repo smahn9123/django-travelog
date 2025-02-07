@@ -33,6 +33,9 @@
             <small class="text-muted">아이디:</small>
             {{ user.username }}</p>
         </div>
+        <div class="mt-4">
+          <a href="{% url 'password_change' %}" class="btn btn-outline-primary">비밀번호 변경</a>
+        </div>
       </div>
     </div>
 
