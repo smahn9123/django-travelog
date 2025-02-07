@@ -75,13 +75,8 @@
         <!-- 작성자 전용 버튼 -->
         {% if post.author == user %}
           <div class="d-flex gap-2 mb-4">
-            <a href="{% url 'post_edit' post.pk %}" class="btn btn-outline-primary">
-              수정하기
-            </a>
-            <form action="{% url 'post_delete' post.pk %}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
-              {% csrf_token %}
-              <button type="submit" class="btn btn-outline-danger">삭제하기</button>
-            </form>
+            <a href="{% url 'post_edit' post.pk %}" class="btn btn-outline-primary">수정하기</a>
+            <a href="{% url 'post_delete' post.pk %}" class="btn btn-outline-danger">삭제하기</a>
           </div>
         {% endif %}
 
