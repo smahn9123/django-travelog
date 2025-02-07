@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
-from django.shortcuts import get_object_or_404, redirect
+from django.http import Http404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import (
     ListView,
     DetailView,
@@ -48,8 +49,27 @@ class PostDetailView(UserPassesTestMixin, DetailView):
     model = Post
     context_object_name = "post"
 
+    def get_object(self, queryset=None):
+        try:
+            return super().get_object(queryset)
+        except Http404:
+            return None
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if self.object is None:
+            return render(
+                request,
+                "blog/post_not_found.html",
+                {"message": "해당 포스트는 존재하지 않습니다."},
+                status=404,
+            )
+        return super().get(request, *args, **kwargs)
+
     def test_func(self):
         post = self.get_object()
+        if post is None:
+            return True
         if self.request.user == post.author:
             return True
         if post.is_subscribers_only:
