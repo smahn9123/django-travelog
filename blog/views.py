@@ -64,6 +64,9 @@ class PostDetailView(UserPassesTestMixin, DetailView):
                 {"message": "해당 포스트는 존재하지 않습니다."},
                 status=404,
             )
+        if self.request.user != self.object.author:
+            self.object.view_count += 1
+            self.object.save()
         return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
