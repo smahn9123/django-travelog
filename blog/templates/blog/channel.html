@@ -43,10 +43,10 @@
 
     <section class="subscribers-list mb-5">
       <div class="d-flex align-items-center mb-3">
-        <h2 class="mb-0 me-3">구독자 목록</h2>
+        <h2 class="mb-0 me-3">구독자 정보</h2>
         <span class="text-muted">{{ subscriptions_received.count }}명</span>
       </div>
-      {% if subscriptions_received %}
+      {% if user == channel_owner and subscriptions_received %}
         <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-3">
           {% for subscription in subscriptions_received %}
             <div class="col">
@@ -69,8 +69,6 @@
             </div>
           {% endfor %}
         </div>
-      {% else %}
-        <p class="text-muted text-center">아직 구독자가 없습니다.</p>
       {% endif %}
     </section>
 
