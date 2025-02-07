@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import (
     ListView,
     DetailView,
@@ -44,9 +44,25 @@ class PostListView(ListView):
         return context
 
 
-class PostDetailView(DetailView):
+class PostDetailView(UserPassesTestMixin, DetailView):
     model = Post
     context_object_name = "post"
+
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        if post.is_subscribers_only:
+            if not self.request.user.is_authenticated:
+                return False
+            return Subscription.objects.filter(
+                subscriber=self.request.user, channel=post.author
+            ).exists()
+        return True
+
+    def handle_no_permission(self):
+        # messages.error()
+        return redirect(self.request.META.get("HTTP_REFERER", "post_list"))
 
 
 class PostWriteView(LoginRequiredMixin, CreateView):
