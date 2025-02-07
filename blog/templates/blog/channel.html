@@ -5,15 +5,15 @@
   <div class="container">
     <!-- 채널 헤더 -->
     <section class="channel-header mb-5">
-      <div class="d-flex align-items-center justify-content-between mb-4">
-        <div class="d-flex align-items-center">
-          {% if channel_owner.profile_img %}
-            <img src="{{ channel_owner.profile_img.url }}" alt="프로필 이미지" class="rounded-circle me-3" style="width: 80px; height: 80px; object-fit: cover;">
-          {% else %}
-            <img src="{% static 'images/default_profile.png' %}" alt="기본 프로필 이미지" class="rounded-circle me-3" style="width: 80px; height: 80px; object-fit: cover;">
-          {% endif %}
+      <div class="d-flex align-items-center mb-4">
+        {% if channel_owner.profile_img %}
+          <img src="{{ channel_owner.profile_img.url }}" alt="프로필 이미지" class="rounded-circle me-3" style="width: 80px; height: 80px; object-fit: cover;">
+        {% else %}
+          <img src="{% static 'images/default_profile.png' %}" alt="기본 프로필 이미지" class="rounded-circle me-3" style="width: 80px; height: 80px; object-fit: cover;">
+        {% endif %}
 
-          <div>
+        <div class="d-flex align-items-center">
+          <div class="me-3">
             <h1 class="mb-1">{{ channel_owner.nickname }}의 블로그</h1>
             <p class="text-muted mb-0">게시물
               {{ posts|length }}개</p>
@@ -21,23 +21,23 @@
               <p class="mt-2">{{ channel_owner.bio }}</p>
             {% endif %}
           </div>
-        </div>
 
-        {% if user.is_authenticated and user != channel_owner %}
-          {% if is_subscribed %}
-            <form action="{% url 'accounts_unsubscribe' %}" method="post">
-              {% csrf_token %}
-              <input type="hidden" name="nickname" value={{ channel_owner.nickname }}>
-              <button type="submit" class="btn btn-primary">구독취소</button>
-            </form>
-          {% else %}
-            <form action="{% url 'accounts_subscribe' %}" method="post">
-              {% csrf_token %}
-              <input type="hidden" name="nickname" value={{ channel_owner.nickname }}>
-              <button type="submit" class="btn btn-primary">구독</button>
-            </form>
+          {% if user.is_authenticated and user != channel_owner %}
+            {% if is_subscribed %}
+              <form action="{% url 'accounts_unsubscribe' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="nickname" value={{ channel_owner.nickname }}>
+                <button type="submit" class="btn btn-primary">구독취소</button>
+              </form>
+            {% else %}
+              <form action="{% url 'accounts_subscribe' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="nickname" value={{ channel_owner.nickname }}>
+                <button type="submit" class="btn btn-primary">구독</button>
+              </form>
+            {% endif %}
           {% endif %}
-        {% endif %}
+        </div>
       </div>
     </section>
 
