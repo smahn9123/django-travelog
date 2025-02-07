@@ -10,6 +10,33 @@
         <div class="mb-4">
           <h1 class="display-5 mb-3">{{ post.title }}</h1>
 
+          <!-- 시리즈 정보 -->
+          {% if post.series %}
+            <div class="card mb-4">
+              <div class="card-body">
+                <h6 class="card-title text-muted mb-3">
+                  <i class="bi bi-collection"></i>
+                  {{ post.series.title }}
+                </h6>
+                <div class="series-posts">
+                  {% for series_post in post.series.posts.all %}
+                    <div class="mb-2">
+                      {% if series_post == post %}
+                        <strong class="text-primary">{{ forloop.counter }}.
+                          {{ series_post.title }}</strong>
+                      {% else %}
+                        <span class="text-muted">{{ forloop.counter }}.</span>
+                        <a href="{% url 'post_detail' pk=series_post.pk %}" class="text-decoration-none">
+                          {{ series_post.title }}
+                        </a>
+                      {% endif %}
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          {% endif %}
+
           <!-- 저자 정보와 메타데이터 -->
           <div class="d-flex justify-content-between align-items-center mb-4">
             <div class="d-flex align-items-center">
