@@ -10,8 +10,8 @@ from django.views.generic import (
     DeleteView,
 )
 from django.urls import reverse, reverse_lazy
-from .forms import PostForm, SeriesForm
-from .models import Post, Series
+from .forms import PostForm, CommentForm, SeriesForm
+from .models import Post, Comment, Series
 from accounts.models import BlogUser, Subscription
 
 
@@ -65,6 +65,11 @@ class PostDetailView(UserPassesTestMixin, DetailView):
                 status=404,
             )
         return super().get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["comment_form"] = CommentForm
+        return context
 
     def test_func(self):
         post = self.get_object()
@@ -188,3 +193,40 @@ class SeriesDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         return self.request.user == self.get_object().author
+
+
+class CommentWriteView(LoginRequiredMixin, CreateView):
+    model = Comment
+    form_class = CommentForm
+    login_url = reverse_lazy("accounts_login")
+
+    def form_valid(self, form):
+        form.instance.post = get_object_or_404(Post, pk=self.kwargs["pk"])
+        form.instance.writer = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("post_detail", kwargs={"pk": self.kwargs["pk"]})
+
+
+class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Comment
+    form_class = CommentForm
+    login_url = reverse_lazy("accounts_login")
+
+    def get_success_url(self):
+        return reverse("post_detail", kwargs={"pk": self.object.post.pk})
+
+    def test_func(self):
+        return self.request.user == self.get_object().writer
+
+
+class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Comment
+    login_url = reverse_lazy("accounts_login")
+
+    def get_success_url(self):
+        return reverse("post_detail", kwargs={"pk": self.object.post.pk})
+
+    def test_func(self):
+        return self.request.user == self.get_object().writer

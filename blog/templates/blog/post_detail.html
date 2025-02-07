@@ -116,4 +116,53 @@
       </div>
     </div>
   </div>
+
+  <!-- 댓글 섹션 -->
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <!-- 댓글 작성 폼 -->
+        {% if user.is_authenticated %}
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="card-title">댓글 작성</h5>
+              <form method="post" action="{% url 'comment_write' post.pk %}">
+                {% csrf_token %}
+                {% bootstrap_form comment_form %}
+                <button type="submit" class="btn btn-primary mt-2">댓글 등록</button>
+              </form>
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- 댓글 리스트 -->
+        <div class="comments">
+          {% for comment in post.comments.all %}
+            <div class="card mb-3">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <div class="d-flex align-items-center">
+                    {% if comment.writer.profile_img %}
+                      <img src="{{ comment.writer.profile_img.url }}" class="rounded-circle me-2" style="width: 30px; height: 30px; object-fit: cover;">
+                    {% else %}
+                      <img src="{% static 'images/default_profile.png' %}" class="rounded-circle me-2" style="width: 30px; height: 30px; object-fit: cover;">
+                    {% endif %}
+                    <strong>{{ comment.writer.nickname }}</strong>
+                  </div>
+                  <small class="text-muted">{{ comment.created_at|date:"Y.m.d H:i" }}</small>
+                </div>
+
+                <p>{{ comment.content }}</p>
+
+                {% if user.is_authenticated and user == comment.writer %}
+                  <a href="{% url 'comment_edit' comment.pk %}" class="btn btn-sm btn-outline-secondary">수정</a>
+                  <a href="{% url 'comment_delete' comment.pk %}" class="btn btn-sm btn-outline-secondary">삭제</a>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

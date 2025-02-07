@@ -17,4 +17,17 @@ urlpatterns = [
         views.SeriesDeleteView.as_view(),
         name="series_delete",
     ),
+    path(
+        "<int:pk>/comments/write",
+        views.CommentWriteView.as_view(),
+        name="comment_write",
+    ),
+    path(
+        "comments/<int:pk>/edit", views.CommentUpdateView.as_view(), name="comment_edit"
+    ),
+    path(
+        "comments/<int:pk>/delete",
+        views.CommentDeleteView.as_view(),
+        name="comment_delete",
+    ),
 ]
