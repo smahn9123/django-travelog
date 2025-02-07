@@ -161,6 +161,10 @@
                 {% endif %}
                 <div class="mt-2">
                   <a href="{% url 'post_detail' pk=post.pk %}" class="btn btn-outline-primary btn-sm">읽기</a>
+                  {% if user == channel_owner %}
+                    <a href="{% url 'post_edit' pk=post.pk %}" class="btn btn-outline-primary btn-sm">수정</a>
+                    <a href="{% url 'post_delete' pk=post.pk %}" class="btn btn-outline-primary btn-sm">삭제</a>
+                  {% endif %}
                 </div>
               </div>
             </div>
