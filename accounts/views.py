@@ -4,9 +4,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import views as auth_views
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
-from django.views.generic import CreateView, TemplateView
+from django.views.generic import CreateView, TemplateView, UpdateView
 from django.urls import reverse_lazy
-from .forms import BlogUserRegistrationForm
+from .forms import BlogUserRegistrationForm, NicknameChangeForm
 from .models import BlogUser, Subscription
 
 
@@ -33,6 +33,16 @@ class LogoutView(auth_views.LogoutView):
 
 class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = "accounts/profile.html"
+
+
+class NicknameChangeView(LoginRequiredMixin, UpdateView):
+    model = BlogUser
+    form_class = NicknameChangeForm
+    template_name = "accounts/nickname_change.html"
+    success_url = reverse_lazy("accounts_profile")
+
+    def get_object(self, qureyset=None):
+        return self.request.user
 
 
 class PasswordChangeView(LoginRequiredMixin, auth_views.PasswordChangeView):

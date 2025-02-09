@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
+from .models import BlogUser
 
 
 class BlogUserRegistrationForm(UserCreationForm):
@@ -29,3 +30,15 @@ class BlogUserRegistrationForm(UserCreationForm):
         super().__init__(*args, **kwargs)
         self.fields["nickname"].label = "닉네임(채널명)"
         self.fields["profile_img"].label = "프로필사진"
+
+
+class NicknameChangeForm(forms.ModelForm):
+    class Meta:
+        model = BlogUser
+        fields = ["nickname"]
+
+    def clean_nickname(self):
+        nickname = self.cleaned_data["nickname"]
+        if BlogUser.objects.filter(nickname=nickname).exists():
+            raise forms.ValidationError("이미 사용 중인 채널 이름입니다.")
+        return nickname
