@@ -29,7 +29,7 @@ def create_initial_categories(apps, schema_editor):
     Category = apps.get_model("blog", "Category")
 
     for category_name in categories:
-        Category.objects.create(name=category_name)
+        Category.objects.get_or_create(name=category_name)
 
 
 def reverse_categories(apps, schema_editor):
