@@ -25,7 +25,7 @@ class Post(models.Model):
         null=True,
         blank=True,
         related_name="posts",
-        verbose_name="시리즈",
+        verbose_name="연재물",
     )
     content = HTMLField(verbose_name="내용")
     thumbnail_img = models.ImageField(
@@ -120,8 +120,8 @@ class Series(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="생성일시")
 
     class Meta:
-        verbose_name = "시리즈"
-        verbose_name_plural = "시리즈 목록"
+        verbose_name = "연재물"
+        verbose_name_plural = "연재물 목록"
         ordering = ["-created_at"]
 
     def __str__(self):
