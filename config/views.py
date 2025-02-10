@@ -19,7 +19,6 @@ def upload_image(request):
 
         # 파일 저장 경로 설정
         upload_path = os.path.join(settings.MEDIA_ROOT, "uploads", file_obj.name)
-        print("upload_path =", upload_path)
 
         # 파일 저장
         with open(upload_path, "wb+") as f:
@@ -28,9 +27,6 @@ def upload_image(request):
 
         # TinyMCE에 반환할 이미지 URL
         location = settings.MEDIA_URL + "uploads/" + file_obj.name
-        print(f"location = {location}")
-        return JsonResponse(
-            {"location": settings.MEDIA_URL + "uploads/" + file_obj.name}
-        )
+        return JsonResponse({"location": location})
 
     return JsonResponse({"error": "Wrong request"})
