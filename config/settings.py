@@ -132,7 +132,7 @@ MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 TINYMCE_DEFAULT_CONFIG = {
-    "height": 360,
+    "height": 700,
     "width": "auto",
     "cleanup_on_startup": True,
     "custom_undo_redo_levels": 20,
@@ -141,13 +141,24 @@ TINYMCE_DEFAULT_CONFIG = {
     "plugins": """
         advlist autolink lists link image charmap preview anchor
         searchreplace visualblocks code fullscreen
-        insertdatetime media table code help wordcount
+        insertdatetime media table code help wordcount emoticons codesample
+        importcss directionality autosave nonbreaking pagebreak
+        save searchreplace visualblocks
         """,
     "toolbar": """
-        undo redo | formatselect | bold italic underline | forecolor backcolor |
-        alignleft aligncenter alignright alignjustify |
-        bullist numlist outdent indent | link image | removeformat | help
+        undo redo | fontselect formatselect fontsizeselect | bold italic underline strikethrough |
+        forecolor backcolor | alignleft aligncenter alignright alignjustify |
+        bullist numlist outdent indent | link image media emoticons codesample |
+        removeformat | fullscreen preview save | help
         """,
     "menubar": True,
     "statusbar": True,
+    "images_upload_url": "/upload_image/",  # 이미지 업로드를 처리할 URL
+    "relative_urls": False,  # 절대 경로 사용
+    # "remove_script_host": True,
+    "convert_urls": True,  # 모든 URL을 relative_urls와 remove_script_host 설정에 따른 형식으로 변환
+    "document_base_url": (
+        "http://127.0.0.1:8000/" if DEBUG else ""
+    ),  # 상대 경로를 절대 경로로 변환할 때 사용할 기준 URL
+    "autosave_interval": "30s",
 }

@@ -10,6 +10,7 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),
     path("blog/", include("blog.urls")),
     path("tinymce/", include("tinymce.urls")),
+    path("upload_image/", views.upload_image, name="upload_image"),
 ]
 
 if settings.DEBUG:
