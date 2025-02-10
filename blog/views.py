@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
 from django.http import Http404
@@ -89,7 +90,11 @@ class PostDetailView(UserPassesTestMixin, DetailView):
         return True
 
     def handle_no_permission(self):
-        # messages.error()
+        post = self.get_object()
+        messages.error(
+            self.request,
+            f"{post.author.nickname} 채널의 구독자 전용 포스트입니다. 구독 후 이용해주세요.",
+        )
         return redirect(self.request.META.get("HTTP_REFERER", "post_list"))
 
 
