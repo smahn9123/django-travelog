@@ -59,6 +59,7 @@ class PostDetailView(UserPassesTestMixin, DetailView):
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         if self.object is None:
+            messages.error(self.request, "잘못된 요청입니다.")
             return render(
                 request,
                 "blog/post_not_found.html",
@@ -113,6 +114,7 @@ class PostWriteView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
+        messages.success(self.request, "포스트가 성공적으로 등록되었습니다.")
         return reverse("post_detail", kwargs={"pk": self.object.pk})
 
 
@@ -132,6 +134,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self):
+        messages.success(self.request, "포스트가 성공적으로 수정되었습니다.")
         return reverse("post_detail", kwargs={"pk": self.object.pk})
 
     def test_func(self):
@@ -140,8 +143,11 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
-    success_url = reverse_lazy("post_list")
     login_url = reverse_lazy("accounts_login")
+
+    def get_success_url(self):
+        messages.success(self.request, "포스트가 삭제되었습니다.")
+        return reverse("post_list")
 
     def test_func(self):
         return self.request.user == self.get_object().author
@@ -183,6 +189,7 @@ class SeriesCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
+        messages.success(self.request, "연재물이 성공적으로 생성되었습니다.")
         return reverse("channel", kwargs={"nickname": self.request.user.nickname})
 
 
@@ -196,6 +203,7 @@ class SeriesUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self):
+        messages.success(self.request, "연재물이 성공적으로 수정되었습니다.")
         return reverse("channel", kwargs={"nickname": self.request.user.nickname})
 
     def test_func(self):
@@ -207,6 +215,7 @@ class SeriesDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     login_url = reverse_lazy("accounts_login")
 
     def get_success_url(self):
+        messages.success(self.request, "연재물이 삭제되었습니다.")
         return reverse("channel", kwargs={"nickname": self.request.user.nickname})
 
     def test_func(self):
