@@ -9,6 +9,14 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         exclude = ["author", "view_count"]
+        widgets = {
+            "tags": forms.TextInput(
+                attrs={
+                    "placeholder": "쉼표로 구분하여 입력하세요",
+                    "value": lambda tags: ", ".join(tag.name for tag in tags),
+                }
+            )
+        }
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop("user", None)  # user 파라미터를 추출
@@ -16,6 +24,10 @@ class PostForm(forms.ModelForm):
         if user:
             self.fields["series"].queryset = Series.objects.filter(author=user)
         self.fields["content"].label = "내용"
+        if self.instance.pk:
+            self.initial["tags"] = ", ".join(
+                tag.name for tag in self.instance.tags.all()
+            )
 
 
 class CommentForm(forms.ModelForm):
