@@ -15,6 +15,7 @@ class PostForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         if user:
             self.fields["series"].queryset = Series.objects.filter(author=user)
+        self.fields["content"].label = "내용"
 
 
 class CommentForm(forms.ModelForm):
