@@ -98,6 +98,11 @@ class PostWriteView(LoginRequiredMixin, CreateView):
     form_class = PostForm
     login_url = reverse_lazy("accounts_login")
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
@@ -111,6 +116,11 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     form_class = PostForm
     # template_name = "blog/post_form.html"
     login_url = reverse_lazy("accounts_login")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
 
     def form_valid(self, form):
         form.instance.author = self.request.user

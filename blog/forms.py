@@ -10,6 +10,12 @@ class PostForm(forms.ModelForm):
         model = Post
         exclude = ["author", "view_count"]
 
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop("user", None)  # user 파라미터를 추출
+        super().__init__(*args, **kwargs)
+        if user:
+            self.fields["series"].queryset = Series.objects.filter(author=user)
+
 
 class CommentForm(forms.ModelForm):
     class Meta:
