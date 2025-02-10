@@ -40,6 +40,9 @@
               {% if post.is_subscribers_only %}
                 <span class="badge bg-primary">구독자 전용</span>
               {% endif %}
+              {% for tag in post.tags.all %}
+                <span class="badge bg-light text-dark">#{{ tag.name }}</span>
+              {% endfor %}
               <div class="mt-2">
                 <a href="{% url 'post_detail' pk=post.pk %}" class="btn btn-outline-primary btn-sm">읽기</a>
               </div>
@@ -92,6 +95,9 @@
               {% if post.is_subscribers_only %}
                 <span class="badge bg-primary">구독자 전용</span>
               {% endif %}
+              {% for tag in post.tags.all %}
+                <span class="badge bg-light text-dark">#{{ tag.name }}</span>
+              {% endfor %}
               <div class="mt-2">
                 <a href="{% url 'post_detail' pk=post.pk %}" class="btn btn-outline-primary btn-sm">읽기</a>
               </div>
