@@ -20,8 +20,6 @@ class PostListView(ListView):
     model = Post
     ordering = "-created_at"
     context_object_name = "posts"
-    # template_name = "blog/post_list.html"
-    # paginate_by = 3
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -121,7 +119,6 @@ class PostWriteView(LoginRequiredMixin, CreateView):
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     form_class = PostForm
-    # template_name = "blog/post_form.html"
     login_url = reverse_lazy("accounts_login")
 
     def get_form_kwargs(self):
