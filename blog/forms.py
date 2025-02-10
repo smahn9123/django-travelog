@@ -12,11 +12,12 @@ class PostForm(forms.ModelForm):
         widgets = {
             "tags": forms.TextInput(
                 attrs={
-                    "placeholder": "쉼표로 구분하여 입력하세요",
+                    "placeholder": "태그를 쉼표(,)로 구분하여 입력하세요",
                     "value": lambda tags: ", ".join(tag.name for tag in tags),
                 }
             )
         }
+        help_texts = {"tags": "게시물에 다양한 태그를 달아보세요!"}
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop("user", None)  # user 파라미터를 추출
