@@ -10,6 +10,7 @@
             <h2 class="card-title mb-4">새 포스트 작성</h2>
             <form method="post" enctype="multipart/form-data">
               {% csrf_token %}
+              {{ form.media }}
               {% bootstrap_form form %}
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <a href="{% url 'post_list' %}" class="btn btn-outline-secondary me-2">취소</a>

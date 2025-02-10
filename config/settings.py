@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django_bootstrap5",
     "accounts",
     "blog",
+    "tinymce",
 ]
 
 MIDDLEWARE = [
@@ -129,3 +130,24 @@ MEDIA_ROOT = BASE_DIR / "media"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+TINYMCE_DEFAULT_CONFIG = {
+    "height": 360,
+    "width": "auto",
+    "cleanup_on_startup": True,
+    "custom_undo_redo_levels": 20,
+    "selector": "textarea",
+    "theme": "silver",
+    "plugins": """
+        advlist autolink lists link image charmap preview anchor
+        searchreplace visualblocks code fullscreen
+        insertdatetime media table code help wordcount
+        """,
+    "toolbar": """
+        undo redo | formatselect | bold italic underline | forecolor backcolor |
+        alignleft aligncenter alignright alignjustify |
+        bullist numlist outdent indent | link image | removeformat | help
+        """,
+    "menubar": True,
+    "statusbar": True,
+}

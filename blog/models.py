@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from tinymce.models import HTMLField
 
 
 class Post(models.Model):
@@ -26,7 +27,7 @@ class Post(models.Model):
         related_name="posts",
         verbose_name="시리즈",
     )
-    content = models.TextField(max_length=3000, default="", verbose_name="내용")
+    content = HTMLField(verbose_name="내용")
     thumbnail_img = models.ImageField(
         upload_to="thumbnails/",
         null=True,

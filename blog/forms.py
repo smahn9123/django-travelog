@@ -1,8 +1,11 @@
 from django import forms
+from tinymce.widgets import TinyMCE
 from .models import Post, Comment, Series
 
 
 class PostForm(forms.ModelForm):
+    content = forms.CharField(widget=TinyMCE())
+
     class Meta:
         model = Post
         exclude = ["author", "view_count"]
