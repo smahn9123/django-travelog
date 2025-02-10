@@ -14,7 +14,7 @@ def upload_image(request):
     if request.method == "POST":
         file_obj = request.FILES["file"]
         file_name_suffix = file_obj.name.split(".")[-1]
-        if file_name_suffix not in ["jpg", "png", "gif", "jpeg"]:
+        if file_name_suffix not in ["jpg", "png", "gif", "jfif", "jpeg", "webp"]:
             return JsonResponse({"error": "Wrong file format"})
 
         # 파일 저장 경로 설정
