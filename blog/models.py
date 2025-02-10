@@ -35,9 +35,7 @@ class Post(models.Model):
         blank=True,
         verbose_name="썸네일",
     )
-    is_subscribers_only = models.BooleanField(
-        default=False, verbose_name="구독자전용여부"
-    )
+    is_subscribers_only = models.BooleanField(default=False, verbose_name="구독자 전용")
     view_count = models.PositiveIntegerField(default=0, verbose_name="조회수")
     tags = TaggableManager(blank=True, verbose_name="태그")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="생성일시")
