@@ -19,20 +19,22 @@ Django를 활용한 여행 블로그 플랫폼으로, 사용자별 채널과 구
 - 포스트 조회수 추적
 - 연재물(시리즈) 생성
 - 카테고리 분류(여행 지역)
-- 댓글 달기
+- 댓글 기능
+- 대댓글 기능
 - 태그 달기
+- 검색 기능
 
 3. 채널 관리 기능
 
 - 나의 구독자 목록 조회
-- 인기 포스트 TOP 3 노출
+- 인기 포스트 TOP 3 노출(조회수 기준)
 - 연재물 목록 표시
 - 포스트 목록 표시
 
 ## 기술 스택
 
 - Backend: Python >= 3.11, Django
-- Frontend: Django Template + Bootstrap
+- Frontend: Django Template + Bootstrap, TinyMCE(에디터 기능), django-taggit(태그 기능)
 - Database: PostgreSQL
 
 ## API 명세
@@ -86,5 +88,15 @@ Django를 활용한 여행 블로그 플랫폼으로, 사용자별 채널과 구
 | POST   | /blog/{post_pk}/comments/write | 댓글 작성 | Yes       | 폼: `content`  |
 | POST   | /blog/comments/{pk}/edit       | 댓글 수정 | Yes\*     | 폼: `content`  |
 | POST   | /blog/comments/{pk}/delete     | 댓글 삭제 | Yes\*     | -              |
+
+\* 작성자만 가능
+
+### 대댓글 API
+
+| 메서드 | URL 패턴                       | 기능        | 인증 필요 | Parameter/Body |
+| ------ | ------------------------------ | ----------- | --------- | -------------- |
+| POST   | /blog/comments/{post_pk}/write | 대댓글 작성 | Yes       | 폼: `content`  |
+| POST   | /blog/reply/{pk}/edit          | 대댓글 수정 | Yes\*     | 폼: `content`  |
+| POST   | /blog/reply/{pk}/delete        | 대댓글 삭제 | Yes\*     | -              |
 
 \* 작성자만 가능
