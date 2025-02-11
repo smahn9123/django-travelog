@@ -12,7 +12,7 @@ from django.views.generic import (
 )
 from django.urls import reverse, reverse_lazy
 from .forms import PostForm, CommentForm, ReplyCommentForm, SeriesForm
-from .models import Post, Comment, ReplyComment, Series
+from .models import Post, Comment, ReplyComment, Category, Series
 from accounts.models import BlogUser, Subscription
 
 
@@ -31,6 +31,9 @@ class PostListView(ListView):
                 | Q(category__name__icontains=q)
                 | Q(tags__name__icontains=q)
             ).distinct()
+        category = self.request.GET.get("category", "")
+        if category:
+            queryset = queryset.filter(category__name=category)
         return queryset.order_by("-created_at")
 
     def get_context_data(self, **kwargs):
@@ -41,6 +44,9 @@ class PostListView(ListView):
             context["popular_posts"] = self.get_queryset().order_by("-view_count")[:3]
         else:
             context["popular_posts"] = Post.objects.order_by("-view_count")[:3]
+        current_category = self.request.GET.get("category", "")
+        context["current_category"] = current_category
+        context["categories"] = Category.objects.all()
         return context
 
 
