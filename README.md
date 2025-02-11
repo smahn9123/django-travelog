@@ -25,6 +25,7 @@ Django를 활용한 여행 블로그 플랫폼으로, 사용자별 채널과 구
 - 대댓글 기능
 - 태그 달기 기능
 - 검색 기능(제목, 내용, 태그)
+- 사이드바 기능(카테고리 조회)
 
 3. 채널 관리
 
@@ -57,7 +58,11 @@ source venv/bin/activate  # Windows: venv\Scripts\activate
 3. 의존성 설치
 
 ```bash
-pip install -r requirements.txt
+개발 환경:
+pip install -r requirements/dev.txt
+
+프로덕션 환경:
+pip install -r requirements/prod.txt
 ```
 
 4. 데이터베이스 마이그레이션
@@ -79,6 +84,10 @@ python manage.py runserver
 3. Commit changes (`git commit -m 'Add some amazing feature'`)
 4. Branch push (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
+
+## ERD (Entity Relationship Diagram)
+
+![ERD](ERD.png)
 
 ## API 명세
 
@@ -143,3 +152,57 @@ python manage.py runserver
 | POST   | /blog/reply/{pk}/delete        | 대댓글 삭제 | Yes\*     | -              |
 
 \* 작성자만 가능
+
+## WBS (Work Breakdown Structure)
+
+- Backend/Frotend를 병행 개발
+
+### Day 1
+
+- [x] 프로젝트 환경 설정
+  - Django 프로젝트 셋업
+  - 데이터베이스(sqlite3) 연결
+- [x] 사용자/블로그 모델 설계
+- [x] 로그인/회원가입/로그아웃 시스템 구현
+
+### Day 2
+
+- [x] 사용자/블로그 모델 구현
+- [x] 포스트 시스템 구현(CRUD)
+- [x] 홈 화면 구현
+- [x] 메인 화면 구현
+  - [x] 모든 포스트 조회 기능
+  - [x] 구독자 전용 포스트에 배지 표시
+  - [x] 비구독자는 포스트의 읽기 비활성화
+  - [x] Top 3 인기 포스트 표시 구현
+- [x] 포스트 화면 구현(댓글 제외)
+- [x] 채널 화면 구현
+  - [x] 시리즈(연재물) 생성 기능
+  - [x] 구독 기능 구현
+
+### Day 3
+
+- [x] 조회수 시스템 구현
+- [x] 구독자 전용 포스트 구현
+- [x] 나의 구독자 조회 기능
+- [x] 댓글 시스템 구현(CRUD)
+
+### Day 4
+
+- [x] 카테고리 시스템 구현(고정된 지역 카테고리)
+- [x] 대댓글 시스템 구현(CRUD)
+- [x] 태그 시스템 구현(CRUD)
+- [x] Django Messages 적용
+- [x] 포스트 editor 적용
+- [x] 포스트 화면 사이드바 적용
+
+### Day 5
+
+- [x] Postgres DB 적용(prod 환경용)
+- [x] 문서 보강 및 최종 점검
+
+### 추가 아이템
+
+- [ ] AI 서비스 추가
+- [ ] 소셜로그인
+- [ ] 배포
