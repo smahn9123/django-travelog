@@ -12,22 +12,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from django.contrib.messages import constants as messages
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-bf7o_41ju6#f-lwii$+xsh5pts2zwq55tbp6&of8&2pv0ivx$%"
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ["*"]
-
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # Application definition
 
@@ -75,18 +63,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -110,11 +86,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
 LANGUAGE_CODE = "ko-kr"
-
 TIME_ZONE = "Asia/Seoul"
-
 USE_I18N = True
-
 USE_TZ = True
 
 AUTH_USER_MODEL = "accounts.BlogUser"
@@ -167,8 +140,8 @@ TINYMCE_DEFAULT_CONFIG = {
     "relative_urls": False,  # 절대 경로 사용
     # "remove_script_host": True,
     "convert_urls": True,  # 모든 URL을 relative_urls와 remove_script_host 설정에 따른 형식으로 변환
-    "document_base_url": (
-        "http://127.0.0.1:8000/" if DEBUG else ""
+    "document_base_url": os.environ.get(
+        "DOMAIN_URL", "http://127.0.0.1:8000/"
     ),  # 상대 경로를 절대 경로로 변환할 때 사용할 기준 URL
     "autosave_interval": "30s",
 }
