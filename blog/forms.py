@@ -1,6 +1,6 @@
 from django import forms
 from tinymce.widgets import TinyMCE
-from .models import Post, Comment, Series
+from .models import Post, Comment, ReplyComment, Series
 
 
 class PostForm(forms.ModelForm):
@@ -38,6 +38,15 @@ class CommentForm(forms.ModelForm):
             "content",
         ]
         widgets = {"content": forms.Textarea(attrs={"rows": 3})}
+
+
+class ReplyCommentForm(forms.ModelForm):
+    class Meta:
+        model = ReplyComment
+        fields = ["content"]
+        widgets = {
+            "content": forms.Textarea(attrs={"rows": 3, "class": "form-control"})
+        }
 
 
 class SeriesForm(forms.ModelForm):

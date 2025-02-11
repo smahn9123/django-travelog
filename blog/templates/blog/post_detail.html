@@ -158,6 +158,51 @@
                   <a href="{% url 'comment_edit' comment.pk %}" class="btn btn-sm btn-outline-secondary">수정</a>
                   <a href="{% url 'comment_delete' comment.pk %}" class="btn btn-sm btn-outline-secondary">삭제</a>
                 {% endif %}
+
+                <!-- 대댓글 버튼 추가 -->
+                {% if user.is_authenticated %}
+                  <button class="btn btn-sm btn-outline-primary mt-2" onclick="toggleReplyForm('reply-form-{{ comment.pk }}')">
+                    답글 달기
+                  </button>
+                {% endif %}
+
+                <!-- 대댓글 작성 폼 -->
+                {% if user.is_authenticated %}
+                  <div id="reply-form-{{ comment.pk }}" class="mt-3" style="display: none;">
+                    <form method="post" action="{% url 'reply_write' comment.pk %}">
+                      {% csrf_token %}
+                      {% bootstrap_form reply_form %}
+                      <button type="submit" class="btn btn-sm btn-primary">답글 등록</button>
+                    </form>
+                  </div>
+                {% endif %}
+
+                <!-- 대댓글 목록 -->
+                <div class="replies mt-3 ms-4">
+                  {% for reply in comment.replies.all %}
+                    <div class="card mb-2">
+                      <div class="card-body py-2">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                          <div class="d-flex align-items-center">
+                            {% if reply.writer.profile_img %}
+                              <img src="{{ reply.writer.profile_img.url }}" class="rounded-circle me-2" style="width: 25px; height: 25px; object-fit: cover;">
+                            {% else %}
+                              <img src="{% static 'images/default_profile.png' %}" class="rounded-circle me-2" style="width: 25px; height: 25px; object-fit: cover;">
+                            {% endif %}
+                            <strong class="small">{{ reply.writer.nickname }}</strong>
+                          </div>
+                          <small class="text-muted">{{ reply.created_at|date:"Y.m.d H:i" }}</small>
+                        </div>
+                        <p class="small mb-1">{{ reply.content }}</p>
+                        {% if user.is_authenticated and user == reply.writer %}
+                          <a href="{% url 'reply_edit' reply.pk %}" class="btn btn-sm btn-outline-secondary">수정</a>
+                          <a href="{% url 'reply_delete' reply.pk %}" class="btn btn-sm btn-outline-secondary">삭제</a>
+                        {% endif %}
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+
               </div>
             </div>
           {% endfor %}
@@ -165,4 +210,15 @@
       </div>
     </div>
   </div>
+
+  <script>
+    function toggleReplyForm(formId) {
+      const form = document.getElementById(formId);
+      if (form.style.display === 'none') {
+        form.style.display = 'block';
+      } else {
+        form.style.display = 'none';
+      }
+    }
+  </script>
 {% endblock %}

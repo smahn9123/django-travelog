@@ -11,8 +11,8 @@ from django.views.generic import (
     DeleteView,
 )
 from django.urls import reverse, reverse_lazy
-from .forms import PostForm, CommentForm, SeriesForm
-from .models import Post, Comment, Series
+from .forms import PostForm, CommentForm, ReplyCommentForm, SeriesForm
+from .models import Post, Comment, ReplyComment, Series
 from accounts.models import BlogUser, Subscription
 
 
@@ -72,6 +72,7 @@ class PostDetailView(UserPassesTestMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["comment_form"] = CommentForm
+        context["reply_form"] = ReplyCommentForm
         return context
 
     def test_func(self):
@@ -251,6 +252,43 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def get_success_url(self):
         return reverse("post_detail", kwargs={"pk": self.object.post.pk})
+
+    def test_func(self):
+        return self.request.user == self.get_object().writer
+
+
+class ReplyCommentWriteView(LoginRequiredMixin, CreateView):
+    model = ReplyComment
+    form_class = ReplyCommentForm
+    login_url = reverse_lazy("accounts_login")
+
+    def form_valid(self, form):
+        form.instance.comment = get_object_or_404(Comment, pk=self.kwargs["comment_pk"])
+        form.instance.writer = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("post_detail", kwargs={"pk": self.object.comment.post.pk})
+
+
+class ReplyCommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = ReplyComment
+    form_class = ReplyCommentForm
+    login_url = reverse_lazy("accounts_login")
+
+    def get_success_url(self):
+        return reverse("post_detail", kwargs={"pk": self.object.comment.post.pk})
+
+    def test_func(self):
+        return self.request.user == self.get_object().writer
+
+
+class ReplyCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = ReplyComment
+    login_url = reverse_lazy("accounts_login")
+
+    def get_success_url(self):
+        return reverse("post_detail", kwargs={"pk": self.object.comment.post.pk})
 
     def test_func(self):
         return self.request.user == self.get_object().writer
