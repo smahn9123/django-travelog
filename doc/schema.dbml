@@ -1,0 +1,128 @@
+// User/Channel 관련 테이블
+Table blog_users {
+  id integer [pk, increment] // Django의 기본 id 필드
+  username varchar(150) [unique, not null] // AbstractUser의 기본 필드
+  password varchar(128) [not null] // AbstractUser의 기본 필드
+  email varchar(254) [not null] // AbstractUser의 기본 필드
+  nickname varchar(30) [unique, not null] // 채널명으로 사용
+  profile_img varchar // ImageField
+  bio text(500) // 최대 500자
+  is_active boolean [default: true] // AbstractUser의 기본 필드
+  is_staff boolean [default: false] // AbstractUser의 기본 필드
+  is_superuser boolean [default: false] // AbstractUser의 기본 필드
+  last_login timestamp
+  date_joined timestamp [default: `now()`]
+  
+  note: '사용자 정보 (AbstractUser 상속)'
+}
+
+Table subscriptions {
+  id integer [pk, increment]
+  subscriber_id integer [ref: > blog_users.id]
+  channel_id integer [ref: > blog_users.id]
+  created_at timestamp [default: `now()`]
+  
+  indexes {
+    (subscriber_id, channel_id) [unique]
+    created_at [name: 'idx_subscriptions_created_at']
+  }
+  
+  note: '구독 정보'
+}
+
+// 카테고리 테이블
+Table categories {
+  id integer [pk, increment]
+  name varchar(30) [unique, not null]
+  
+  note: '카테고리 정보'
+}
+
+// 시리즈 관련 테이블
+Table series {
+  id integer [pk, increment]
+  author_id integer [ref: > blog_users.id]
+  title varchar(100) [not null]
+  description text(300) [default: '']
+  created_at timestamp [default: `now()`]
+  
+  indexes {
+    created_at [name: 'idx_series_created_at']
+  }
+  
+  note: '연재물 정보'
+}
+
+// 포스트 관련 테이블
+Table posts {
+  id integer [pk, increment]
+  author_id integer [ref: > blog_users.id]
+  category_id integer [ref: > categories.id, null]
+  series_id integer [ref: > series.id, null]
+  title varchar(100) [not null]
+  content text [not null] // HTMLField
+  thumbnail_img varchar // ImageField
+  is_subscribers_only boolean [default: false]
+  view_count integer [default: 0]
+  created_at timestamp [default: `now()`]
+  updated_at timestamp
+  
+  indexes {
+    created_at [name: 'idx_posts_created_at']
+  }
+}
+
+// 태그 관련 테이블
+Table taggit_tag {
+  id integer [pk, increment]
+  name varchar(100) [unique, not null]
+  slug varchar(100) [unique, not null]
+  
+  note: 'taggit 태그 정보'
+}
+
+// 태그-포스트 M2M 관계 테이블
+Table taggit_taggeditem {
+  id integer [pk, increment]
+  tag_id integer [ref: > taggit_tag.id]
+  content_type_id integer 
+  object_id integer
+  
+  indexes {
+    (content_type_id, object_id, tag_id) [unique]
+  }
+  
+  note: 'Generic M2M 관계 (object_id는 posts.id 참조)'
+}
+
+// 댓글 관련 테이블
+Table comments {
+  id integer [pk, increment]
+  post_id integer [ref: > posts.id]
+  writer_id integer [ref: > blog_users.id]
+  content text(500) [not null, default: '']
+  created_at timestamp [default: `now()`]
+  updated_at timestamp
+  
+  indexes {
+    created_at [name: 'idx_comments_created_at']
+  }
+  
+  note: '댓글 정보'
+}
+
+// 대댓글 테이블
+Table reply_comments {
+  id integer [pk, increment]
+  comment_id integer [ref: > comments.id]
+  writer_id integer [ref: > blog_users.id]
+  content text(500) [not null, default: '']
+  created_at timestamp [default: `now()`]
+  updated_at timestamp
+  
+  indexes {
+    created_at [name: 'idx_reply_comments_created_at']
+  }
+  
+  note: '대댓글 정보'
+}
