@@ -1,19 +1,21 @@
 # django-travelog
 
-Travelog - Django로 만든 여행 블로그
+<p><img src="Travelog.png" width="300" height="auto" alt="프로젝트 로고"></p>
+<h1>Travelog - Django로 만든 여행 블로그</h1>
 
 Django를 활용한 여행 블로그 플랫폼으로, 사용자별 채널과 구독 기능을 통해 여행 포스트를 작성하고 공유할 수 있는 서비스입니다.
+글을 작성하고 시리즈로 묶어 연재할 수 있으며, 댓글과 답글로 소통할 수 있습니다.
 
 ## 주요 기능
 
-1. 사용자/채널 시스템
+1. 사용자/채널 관리
 
 - 회원가입/로그인 (닉네임 = 채널명)
-- 채널명 변경 기능
 - 비밀번호 변경 기능
-- 나의 구독 채널 리스트
+- 채널명 변경 가능
+- 나의 구독 채널 리스트 조회
 
-2. 포스트 시스템
+2. 포스트(게시글) 관리
 
 - 일반/구독자 전용 포스트 작성
 - 포스트 조회수 추적
@@ -21,21 +23,62 @@ Django를 활용한 여행 블로그 플랫폼으로, 사용자별 채널과 구
 - 카테고리 분류(여행 지역)
 - 댓글 기능
 - 대댓글 기능
-- 태그 달기
-- 검색 기능
+- 태그 달기 기능
+- 검색 기능(제목, 내용, 태그)
 
-3. 채널 관리 기능
+3. 채널 관리
 
 - 나의 구독자 목록 조회
 - 인기 포스트 TOP 3 노출(조회수 기준)
-- 연재물 목록 표시
-- 포스트 목록 표시
+- 나의 연재물 목록 표시
+- 나의 포스트 목록 표시
 
 ## 기술 스택
 
 - Backend: Python >= 3.11, Django
 - Frontend: Django Template + Bootstrap, TinyMCE(에디터 기능), django-taggit(태그 기능)
-- Database: PostgreSQL
+- Database: SQLite3(개발), PostgreSQL(상용)
+
+## 설치 방법
+
+1. 저장소 클론
+
+```bash
+git clone (저장소 URL)
+```
+
+2. 가상환경 생성 및 활성화
+
+```bash
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+```
+
+3. 의존성 설치
+
+```bash
+pip install -r requirements.txt
+```
+
+4. 데이터베이스 마이그레이션
+
+```bash
+python manage.py migrate
+```
+
+5. 개발 서버 실행
+
+```bash
+python manage.py runserver
+```
+
+## 기여 방법
+
+1. Fork Repository
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add some amazing feature'`)
+4. Branch push (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## API 명세
 
