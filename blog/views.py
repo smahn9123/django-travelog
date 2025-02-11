@@ -231,6 +231,7 @@ class CommentWriteView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
+        messages.success(self.request, "댓글이 등록되었습니다.")
         return reverse("post_detail", kwargs={"pk": self.kwargs["pk"]})
 
 
@@ -240,6 +241,7 @@ class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     login_url = reverse_lazy("accounts_login")
 
     def get_success_url(self):
+        messages.success(self.request, "댓글이 수정되었습니다.")
         return reverse("post_detail", kwargs={"pk": self.object.post.pk})
 
     def test_func(self):
@@ -251,6 +253,7 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     login_url = reverse_lazy("accounts_login")
 
     def get_success_url(self):
+        messages.success(self.request, "댓글이 삭제되었습니다.")
         return reverse("post_detail", kwargs={"pk": self.object.post.pk})
 
     def test_func(self):
@@ -268,6 +271,7 @@ class ReplyCommentWriteView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
+        messages.success(self.request, "답글이 등록되었습니다.")
         return reverse("post_detail", kwargs={"pk": self.object.comment.post.pk})
 
 
@@ -277,6 +281,7 @@ class ReplyCommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView
     login_url = reverse_lazy("accounts_login")
 
     def get_success_url(self):
+        messages.success(self.request, "답글이 수정되었습니다.")
         return reverse("post_detail", kwargs={"pk": self.object.comment.post.pk})
 
     def test_func(self):
@@ -288,6 +293,7 @@ class ReplyCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView
     login_url = reverse_lazy("accounts_login")
 
     def get_success_url(self):
+        messages.success(self.request, "답글이 삭제되었습니다.")
         return reverse("post_detail", kwargs={"pk": self.object.comment.post.pk})
 
     def test_func(self):
