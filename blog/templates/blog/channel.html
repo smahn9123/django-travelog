@@ -147,9 +147,10 @@
                 <h5 class="card-title fs-4 mb-2">{{ post.title }}</h5>
                 <p class="card-text">
                   <small class="text-muted">
-                    조회수
+                    <i class="bi bi-eye"></i>
                     {{ post.view_count }}
-                    · 작성
+                    <span class="mx-2">·</span>
+                    <i class="bi bi-calendar"></i>
                     {{ post.created_at|date:"Y.m.d" }}
                   </small>
                 </p>
