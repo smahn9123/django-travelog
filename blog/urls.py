@@ -1,5 +1,5 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
+from . import views, api
 
 urlpatterns = [
     path("", views.PostListView.as_view(), name="post_list"),
@@ -45,4 +45,13 @@ urlpatterns = [
         views.ReplyCommentDeleteView.as_view(),
         name="reply_delete",
     ),
+]
+
+
+urlpatterns_api_v1 = [
+    path("", api.post_list, name="post_list"),
+]
+
+urlpatterns += [
+    path("api/", include((urlpatterns_api_v1, "api-v1"))),
 ]
